@@ -48,7 +48,7 @@ methods: {
   fetchHeroes() {
     const url = `${this.baseUrl}?ts=${this.timestamp}&apikey=${this.publicKey}&hash=${this.getHash()}`;
     console.log(url);
-    let response = await fetch()
+    let response = fetch(url)
   },
 },
   mounted(){
