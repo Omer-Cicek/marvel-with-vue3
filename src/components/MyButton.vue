@@ -1,28 +1,27 @@
 <template>
-  <button class="custom-button" :class="buttonClass" :style="{ width: width }" @click="handleClick">
-    <slot></slot>
-  </button>
+    <button class="custom-button" :class="buttonClass" :style="{ width: width }" @click="handleClick">
+        <slot></slot>
+    </button>
 </template>
 
 <script>
 export default {
-  props: {
-    buttonClass: {
-      type: String,
-      default: '',
+    props: {
+        buttonClass: {
+          type: String,
+          default: '',
+        },
+        width: {
+          type: String,
+          default: '',
+        },
     },
-    width: {
-      type: String,
-      default: '',
+    methods: {
+        handleClick() { // Emit a custom event when the button is clicked
+        
+            this.$emit('customClick');
+        },
     },
-  },
-  methods: {
-    handleClick() {
-      // Emit a custom event when the button is clicked
-      console.log("clicked")
-      this.$emit('customClick');
-    },
-  },
 };
 </script>
 

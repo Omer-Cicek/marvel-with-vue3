@@ -1,7 +1,6 @@
 import axios from 'axios'
-export default {
 
-  getData (api) {
+  export function getData (api) {
     const configuration = {
       headers: {
         'content-type': 'application/json',
@@ -17,4 +16,3 @@ export default {
         return err.response
       })
   }
-}
