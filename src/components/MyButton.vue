@@ -25,17 +25,18 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .custom-button {
-  background-color: #EE4B2B;
-  color: #ffffff;
-  padding: 8px 16px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+    background-color: #EE4B2B;
+    color: #ffffff;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #800020;
+    }
 }
 
-.custom-button:hover {
-  background-color: #800020;
-}
 </style>

@@ -1,26 +1,77 @@
 <template>
-    <header>
-    </header>
+        <div class="home-imageContainer">
+            <img src="@/assets/characters.jpg" alt="" class="image" />
+            <div class="onImage">
+
+                <p class="text">
+                    "It's not about how much we lost, <br> it's about how much we have left."
+                    <br />
+                    - Tony Stark (Avengers: Endgame)
+                </p>
+                <MyButton width="200px" @customClick="redirectToMarvel"> 
+                    Marvel's Page
+                </MyButton>
+            </div>
+        </div>
     <RouterView />
 </template>
 
 
 <script>
+import MyButton from '@/components/MyButton.vue'
 export default {
+
+    components:{
+        MyButton
+    },
+
     data(){
         return{
          
         }
     },
+
+    methods:{
+        redirectToMarvel() {
+            window.location.href = 'https://www.marvel.com/';
+        }
+    },
+    
     mounted() {
         console.log('BASE_URL:', import.meta.env.VITE_BASE_URL);
-    },
+    }
+    
 }
 </script>
 
 
 
 <style lang="scss" >
+        .home-imageContainer {
+            height: 100%;
+            position: relative;
+
+            .image {
+                width: 100%;
+                height: 50vh;
+            }
+
+            .onImage {
+                position: absolute;
+                font-size: 1.1rem;  
+                top: 40%;
+                left: 25%;
+                color: #fff;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .text {
+                font-size: 1.4rem;
+            }
+        }
+
 
 $bgColor: red;
 

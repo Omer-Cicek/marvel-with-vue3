@@ -1,21 +1,11 @@
 <template>
     <main class="home">
-        <div class="home-imageContainer">
-            <img src="@/assets/characters.jpg" alt="" class="image" />
-            <div class="onImage">
-
-                <p class="text">
-                    "It's not about how much we lost, <br> it's about how much we have left."
-                    <br />
-                    - Tony Stark (Avengers: Endgame)
-                </p>
-                <MyButton width="200px" @customClick="redirectToMarvel"> 
-                    Marvel's Page
-                </MyButton>
-            </div>
-        </div>
         <div class="cardsDiv">
-            <MyCard v-for="hero in marvelData" :key="hero.id" :image="hero.thumbnail.path+'.'+hero.thumbnail.extension" :desc="hero.description" :title="hero.title" :creators="hero.creators" :width="cardWidth" :height="cardHeight" />
+            <h1 style="color:white; text-align: center; font-size:3rem; font-weight: bold; margin: 20px">Marvel App</h1>
+            <h4 v-if="loading" style="color:white; text-align: center; font-size:2rem; font-weight: bold; margin: 20px">Loading...</h4>
+            <div class="cardsDiv-inner">
+                <MyCard v-for="hero in marvelData" :key="hero.id" :image="hero.thumbnail.path+'.'+hero.thumbnail.extension" :desc="hero.description" :title="hero.title" :creators="hero.creators.items" :width="cardWidth" :height="cardHeight" @click="detailHandler(hero)"/>
+            </div>
         </div>
         <toastify ref="toastify" />
     </main>
@@ -30,7 +20,7 @@ import { MD5 } from 'crypto-js';
 import axios from 'axios';
 import MyCard from '@/components/MyCard.vue';
 import Toastify from '../components/Toastify.vue';
-
+import store from '../store'
 
 export default {
     components: {
@@ -47,13 +37,19 @@ export default {
             timestamp   : Date.now().toString(),
             marvelData  : [],
             cardWidth   : '700px',
-            cardHeight  : '300px'
+            cardHeight  : '300px',
+            loading     : false
         }
     },
 
     methods: {
-        redirectToMarvel() {
-            window.location.href = 'https://www.marvel.com/';
+
+
+        detailHandler(hero){
+            console.log("rrr", hero);
+            console.log("hero.creators", hero.creators);
+            
+            store.commit('addDetailData', hero) 
         },
 
         getHash() {
@@ -63,6 +59,7 @@ export default {
         },
 
         async fetchHeroes() {
+            this.loading= true
             const url = `${this.baseUrl}/v1/public/comics?ts=${this.timestamp}&apikey=${this.publicKey}&hash=${this.getHash()}`;
             console.log(url);
             axios.get(url).then(res =>{
@@ -74,8 +71,13 @@ export default {
                 }else{
 
                 }
-            })
+            }).catch(err =>  this.$refs.toastify.toastError('An error occured!'))
+            .finally(() => this.loading= false)
         }
+    },
+
+    created(){
+        store.commit('deleteDetailData')
     },
 
     mounted(){
@@ -86,42 +88,23 @@ export default {
 
 <style lang="scss" scoped>
     .home {
-        &-imageContainer {
-            height: 100%;
-            position: relative;
-
-            .image {
-                width: 100%;
-                height: 50vh;
-            }
-
-            .onImage {
-                position: absolute;
-                font-size: 1.1rem;  
-                top: 40%;
-                left: 25%;
-                color: #fff;
-                display: flex;
-                flex-direction: column;
-                gap: 10px;
-            }
-
-            .text {
-                font-size: 1.4rem;
-            }
-        }
+        
 
         .cardsDiv {
             background-color: #010101;
             min-height: 50vh;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: stretch;
-            justify-content: center;
             margin-top:-7px;
-            gap: 20px;
             width: 100%;
             padding: 20px;
+            &-inner{
+                margin: auto;
+                width: 80%;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 20px;
+                align-items:baseline;
+                justify-content: center;
+            }
         }
     }
 

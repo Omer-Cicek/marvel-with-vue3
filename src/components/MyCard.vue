@@ -1,61 +1,57 @@
 <template>
-  <a class="card-link" href="#">
+  <div class="card-link" @click="redirectToDetail">
+    <my-popup title="Creators" :content="creators" class="card-link-popup"></my-popup>
     <img class="post-image" :src="image" />
     <article class="blog-card">
       <div class="article-details">
-        <h1 class="post-category">{{ title }}</h1>
-        <div></div>
-        <h6 class="creators">Creators</h6>
-        <span v-if="creators.length != 0">
-          <!-- <p class="post-title" v-for="(creator, index) in creators.items" :key="index">{{ creator.name }}</p> -->
-          <button @click="$emit('open-popup')">trigger button</button>
-        </span>
-        <span v-if="creators.length === 0">
-          <h3 class="post-title">Creator info not found</h3>
-        </span>
-        <h6 class="creators">Description</h6>
-        <p class="post-description">{{ desc }}</p>
+        <div class="creators">
+          <h1 class="post-category post-title">{{ title }}</h1>
+        </div>
+        <p class="post-description" v-if="desc">
+          <span class="post-description-title">Description:</span> {{ desc }}
+        </p>
+        <p class="post-description" v-else>
+          <span class="post-description-title">Description:</span> No description
+        </p>
       </div>
     </article>
-  </a>
+  </div>
 </template>
 
 <script>
-import imgNotFound from '../assets/imgNotFound.png'
-    export default {
-        props: {
-            title: {
-                type: String,
-                default: 'Title not Found!'
-            },
-            creators: {
-                type: Array,
-                default: () => [] 
-            },
-            desc: {
-                type: String,
-                default: 'Description not Found!'
-            },
-            image: {
-                type: String,
-                default: imgNotFound
-            },
-            width: {
-                type: String,
-                default: '700px'
-            },
-            height: {
-                type: String,
-                default: '300px'
-            },
-        },
-        data() {
-            return {
-            };
-        }
-    }
-</script>
+import imgNotFound from '../assets/imgNotFound.png';
+import MyPopup from '../components/MyPopup.vue';
 
+export default {
+  components: {
+    MyPopup,
+  },
+  props: {
+    title: {
+      type: String,
+      default: 'Title not Found!',
+    },
+    creators: {
+      type: Array,
+      default: () => [],
+    },
+    desc: {
+      type: String,
+      default: 'Description not Found!',
+    },
+    image: {
+      type: String,
+      default: imgNotFound,
+    },
+  },
+  methods:{
+    redirectToDetail(e){
+        console.log("sa", e.target);
+        this.$router.push('/detail')
+    }
+  }
+};
+</script>
 <style lang="scss" scoped>
 
 $bg: #eedfcc;
@@ -67,32 +63,33 @@ $border: #ebebeb;
 $shadow: rgba(0, 0, 0, 0.2);
 
 @mixin transition($args...) {
-  transition: $args;
+    transition: $args;
 }
 
 
 body {
-  display: flex;
-  font-family: 'Poppins', sans-serif;
-  font-weight: 400;
-  color: $text;
-  background: $bg;
-  font-size: 0.9375rem;
-  min-height: 100vh;
-  margin: 0;
-  line-height: 1.6;
-  align-items: center;
-  justify-content: center;
-  text-rendering: optimizeLegibility;
-  border: 1px red solid;
+    display: flex;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    color: $text;
+    background: $bg;
+    font-size: 0.9375rem;
+    min-height: 100vh;
+    margin: 0;
+    line-height: 1.6;
+    align-items: center;
+    justify-content: center;
+    text-rendering: optimizeLegibility;
+    border: 1px red solid;
 }
 
 #root {
-  width: 30rem;
-  height: 11rem;
+    width: 30rem;
+    height: 11rem;
 }
 
 .blog-card {
+    // position: relative;
     display: flex;
     flex-direction: row;
     background: $white;
@@ -100,37 +97,34 @@ body {
     border-end-end-radius: 0.375rem;
     border-end-start-radius: 0.375rem;
     overflow: hidden;
-    min-height: 400px;
+    height: 500px;
     width: 400px;
-
 }
 
 .card-link {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: inherit;
-  text-decoration: none;
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: inherit;
+    text-decoration: none;
 
-  &:hover .post-title {
-    @include transition(color 0.3s ease);
-    color: $red;
-  }
-  &:hover .post-image {
-    @include transition(opacity 0.3s ease);
-    opacity: 0.9;
-  }
-}
-
-.post-image {
-    @include transition(opacity 0.3s ease);
-    display: block;
-    max-width: 400px;
-    width: 100%;
-    height: 400px;
-    object-fit: fill ;
+    &:hover .post-title {
+        @include transition(color 0.3s ease);
+        color: $red;
+        cursor: pointer;
+    }
+    // &:hover .post-image {
+    //     @include transition(opacity 0.3s ease);
+    //     opacity: 0.9;
+    // }
+    &-popup{
+        position: absolute;
+        right: 10px;
+        top: 10px;
+    }
 }
 
 .article-details {
@@ -138,28 +132,57 @@ body {
     padding: 1.5rem;
 }
 
-.post-category {
-  display: inline-block;
-  text-transform: uppercase;
-  font-weight: 700;
-  line-height: 1;
-  letter-spacing: 0.0625rem;
-  margin: 0 0 0.75rem 0;
-  padding: 0 0 0.25rem 0;
-  border-bottom: 0.125rem solid $border;
+.post{
+    &-category {
+        text-align: center;
+        text-transform: uppercase;
+        font-weight: 700;
+        font-size: 1.2rem;
+        letter-spacing: 0.0625rem;
+        margin: 0 0 12px 0;
+        padding: 0 0 2px 0;
+        border-bottom: 0.125rem solid $border;
+        line-height: 1.3;
+    }
+    &-description{
+        &-title{
+            font-weight: bold
+        }
+    }
+    &-image {
+        @include transition(opacity 0.3s ease);
+        display: block;
+        max-width: 400px;
+        width: 100%;
+        height: 400px;
+        object-fit: fill ;
+    }
 }
 
 .creators{
-    border-bottom: 0.125rem solid $border;
-     display: inline-block;
-  text-transform: uppercase;
-  line-height: 1;
-  letter-spacing: 0.0625rem;
-  margin: 0 0 0.75rem 0;
-  padding: 0 0 0.25rem 0;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 1.1rem;
+    font-weight: bold;
+    &-title{
+        border-bottom: 0.125rem solid $border;
+        display: inline-block;
+        text-transform: uppercase;
+        line-height: 1;
+        letter-spacing: 0.0625rem;
+        margin: 0 0 0.75rem 0;
+        padding: 0 0 0.25rem 0;
+    }
+
 }
 
-
+    .blog-card:hover{
+        @include transition(color 0.3s ease);
+        min-height: 500px;
+        height: auto;
+    }
 
 @media (max-width: 40rem) {
   #root {

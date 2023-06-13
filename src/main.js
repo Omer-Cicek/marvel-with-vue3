@@ -1,18 +1,18 @@
 import './main.css'
 import 'vue3-toastify/dist/index.css';
-import { library } from '@fortawesome/fontawesome-svg-core'
+import '@fortawesome/fontawesome-free/css/all.css';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faUserSecret } from '@fortawesome/free-solid-svg-icons'
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
+import store from './store';
 
-library.add(faUserSecret)
+// library.add(faCircleInfo)
+// library.add(faUserSecret)
 
-/* add font awesome icon component */
-// .component('font-awesome-icon', FontAwesomeIcon)
-const app = createApp(App)
+const app = createApp(App).component('font-awesome-icon', FontAwesomeIcon)
 
+app.use(store)
 app.use(router)
 
 app.mount('#app')
