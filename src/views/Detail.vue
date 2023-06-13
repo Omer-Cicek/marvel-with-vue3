@@ -34,7 +34,6 @@
 <script>
 
 import store from '../store'
-import HTML from "vue-html";
 
 export default{
     

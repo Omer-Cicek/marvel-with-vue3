@@ -8,7 +8,7 @@
           <h1 class="post-category post-title">{{ title }}</h1>
         </div>
         <p class="post-description" v-if="desc">
-          <span class="post-description-title">Description:</span> {{ desc }}
+          <span class="post-description-title" v-html="desc"></span>
         </p>
         <p class="post-description" v-else>
           <span class="post-description-title">Description:</span> No description
@@ -97,7 +97,7 @@ body {
     border-end-end-radius: 0.375rem;
     border-end-start-radius: 0.375rem;
     overflow: hidden;
-    height: 500px;
+    height: 400px;
     width: 400px;
 }
 
@@ -176,7 +176,7 @@ body {
 
     .blog-card:hover{
         @include transition(color 0.3s ease);
-        min-height: 500px;
+        min-height: 400px;
         height: auto;
     }
 
