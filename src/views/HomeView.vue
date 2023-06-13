@@ -1,11 +1,16 @@
 <template>
     <main class="home">
+        <!-- All cards parent div -->
         <div class="cardsDiv">
             <h1 style="color:white; text-align: center; font-size:3rem; font-weight: bold; margin: 20px">Marvel App</h1>
+            <!-- loading info for UX -->
             <h4 v-if="loading" style="color:white; text-align: center; font-size:2rem; font-weight: bold; margin: 20px">Loading...</h4>
             <div class="cardsDiv-inner">
+                <!-- cards -->
                 <MyCard v-for="hero in marvelData" :key="hero.id" :image="hero.thumbnail.path+'.'+hero.thumbnail.extension" :desc="hero.description" :title="hero.title" :creators="hero.creators.items" :width="cardWidth" :height="cardHeight" @click="detailHandler(hero)"/>
             </div>
+            <!-- footer -->
+          <p class="detail-footer" style="color: white; text-align: center" v-if="!loading"> &#169; All rights reserved. </p>
         </div>
         <toastify ref="toastify" />
     </main>
@@ -31,34 +36,29 @@ export default {
 
     data(){
         return{
-            baseUrl     : import.meta.env.VITE_BASE_URL,
-            publicKey   : import.meta.env.VITE_PUBLIC_KEY,
-            privateKey  : import.meta.env.VITE_PRIVATE_KEY,
-            timestamp   : Date.now().toString(),
-            marvelData  : [],
-            cardWidth   : '700px',
-            cardHeight  : '300px',
-            loading     : false
+            baseUrl     : import.meta.env.VITE_BASE_URL,    //baseURL --> https:/marvel.com
+            publicKey   : import.meta.env.VITE_PUBLIC_KEY,  //public key
+            privateKey  : import.meta.env.VITE_PRIVATE_KEY, //private key
+            timestamp   : Date.now().toString(),            //timestamp for hash to request
+            marvelData  : [],                               //Data that displaying with card componenet
+            cardWidth   : '700px',                          //card's width
+            cardHeight  : '300px',                          //card's height
+            loading     : false                             //loading state
         }
     },
 
     methods: {
-
-
-        detailHandler(hero){
-            console.log("rrr", hero);
-            console.log("hero.creators", hero.creators);
-            
+        detailHandler(hero){                                //set data to store
             store.commit('addDetailData', hero) 
         },
 
-        getHash() {
+        getHash() {                                         // gives hash for marvel Data request
             return MD5(
             this.timestamp + this.privateKey + this.publicKey
             ).toString();
         },
 
-        async fetchHeroes() {
+        async fetchHeroes() {                               //fetch MarvelData
             this.loading= true
             const url = `${this.baseUrl}/v1/public/comics?ts=${this.timestamp}&apikey=${this.publicKey}&hash=${this.getHash()}`;
             console.log(url);
@@ -69,18 +69,18 @@ export default {
                     console.log(res.data.data,"resss");
                     this.$refs.toastify.toastSuccess('Data successfully uploaded!');
                 }else{
-
+                    this.$refs.toastify.toastError('An error occured!')
                 }
             }).catch(err =>  this.$refs.toastify.toastError('An error occured!'))
             .finally(() => this.loading= false)
         }
     },
 
-    created(){
+    created(){                                              //delete store data to get updated data
         store.commit('deleteDetailData')
     },
 
-    mounted(){
+    mounted(){                                              //calls fetchHeroes 
         this.fetchHeroes()
     }
 };

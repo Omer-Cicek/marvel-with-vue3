@@ -11,7 +11,6 @@
                 <MyButton width="200px" @customClick="redirectToMarvel"> 
                     Marvel's Page
                 </MyButton>
-    <footer/>
             </div>
         </div>
     <RouterView />

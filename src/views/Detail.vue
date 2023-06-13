@@ -1,25 +1,33 @@
 <template>
   <div class="detail">
     <div  v-if="!!characters" class="detail-container">
+        <!-- Detail Image -->
         <div class="detail-container-image image">
             <img class="image" :src="imageSource" alt="marvel" >
         </div>
+        <!-- Info Container -->
         <div class="detail-container-infos">
+            <!-- title -->
             <h1 class="detail-title title">{{title}}</h1>
+            <!-- Creators Container -->
             <div class="detail-container-creators">
+                <!-- penciller -->
                 <div class="creator">
                     <h6 class="underline">Penciller</h6>
                     <span class="detail-title penciller" v-for="(item, index) in penciller" :key="index">{{item.name}} <br></span>
                     <p v-if="penciller.length == 0" > No penciller data</p>
                 </div>
+                <!-- writer -->
                 <div class="creator right">
                     <h6 class="underline">Writer</h6>
                     <span class="detail-title" v-for="(item, index) in writer" :key="index">{{item.name}}<br></span>
                     <p v-if="writer.length == 0" > No writer data</p>
                 </div>
             </div>
+            <!-- description -->
             <p v-if="!!description.length" class="detail-container-desc " v-html="description">
             </p>
+            <!-- if there is no desc -->
             <p v-else class="detail-container-desc  noData">
                 There is no description for this content.
             </p>
@@ -27,7 +35,7 @@
     </div>
     <p class="detail-title" v-else > There is no data to show!</p>
 
-  <p class="detail-footer"> &#169; All rights reserved. </p>
+  <p class="detail-footer" style="color: white"> &#169; All rights reserved. </p>
   </div>
 </template>
 
@@ -39,22 +47,21 @@ export default{
     
     data(){
         return{
-            title       : store.state.detailData.title,
-            characters  : store.state.detailData.characters,
-            imageSource : store.state.detailData.thumbnail.path+'.'+store.state.detailData.thumbnail.extension,
-            description : store.state.detailData.description ?  store.state.detailData.description : "",
-            penciller   : [],
-            writer      : [],
+            title       : store.state.detailData.title,                                                             //title data from store
+            characters  : store.state.detailData.characters,                                                        //characters data from store
+            imageSource : store.state.detailData.thumbnail.path+'.'+store.state.detailData.thumbnail.extension,     //image data from store
+            description : store.state.detailData.description ?  store.state.detailData.description : "",            //description data from store
+            penciller   : [],                                                                                       //penciller data
+            writer      : [],                                                                                       //writer data 
         }
     },
 
     created(){
-        const creators = store.state.detailData.creators.items
+        const creators = store.state.detailData.creators.items  // gets the data from store and push writer and penciller data to display at UI
         creators.map(creator => {
             creator.role.includes("penciller") ? this.penciller.push(creator) : 
                 creator.role.includes("writer") ? this.writer.push(creator) : null
         })
-        console.log(this.penciller);
     }
 }
 </script>
