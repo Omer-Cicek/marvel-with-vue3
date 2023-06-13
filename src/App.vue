@@ -11,6 +11,7 @@
                 <MyButton width="200px" @customClick="redirectToMarvel"> 
                     Marvel's Page
                 </MyButton>
+    <footer/>
             </div>
         </div>
     <RouterView />
@@ -19,10 +20,12 @@
 
 <script>
 import MyButton from '@/components/MyButton.vue'
+import Footer from '@/components/Footer.vue'
 export default {
 
     components:{
-        MyButton
+        MyButton,
+        Footer
     },
 
     data(){
@@ -71,7 +74,12 @@ export default {
                 font-size: 1.4rem;
             }
         }
+        @media (max-width: 650px) {
+            .text {
+                font-size: 1rem !important;
+            }
 
+        }
 
 $bgColor: red;
 

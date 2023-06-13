@@ -116,10 +116,6 @@ body {
         color: $red;
         cursor: pointer;
     }
-    // &:hover .post-image {
-    //     @include transition(opacity 0.3s ease);
-    //     opacity: 0.9;
-    // }
     &-popup{
         position: absolute;
         right: 10px;
