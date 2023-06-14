@@ -37,10 +37,6 @@ export default {
         redirectToMarvel() {
             window.location.href = 'https://www.marvel.com/';
         }
-    },
-    
-    mounted() {
-        console.log('BASE_URL:', import.meta.env.VITE_BASE_URL);
     }
     
 }

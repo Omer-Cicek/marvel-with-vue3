@@ -7,7 +7,6 @@ export default createStore({
     },
     mutations: {
         addDetailData(state, item) {
-            console.log( item , "itemmm");
             state.detailData = item
         },
         deleteDetailData(state) {

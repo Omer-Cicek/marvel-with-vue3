@@ -46,7 +46,6 @@ export default {
   },
   methods:{
     redirectToDetail(e){
-        console.log("sa", e.target);
         this.$router.push('/detail')
     }
   }
