@@ -112,7 +112,7 @@ body{
         justify-content: center;
 
         &-container {
-            // width: 60%;
+            width: 60%;
             border: 2px white solid;
             min-height: 605px;
             height: auto;
