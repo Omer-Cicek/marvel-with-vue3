@@ -62,8 +62,6 @@ export default{
             description     : store.state.detailData.description ?  store.state.detailData.description : "",            //description data from store
             penciller       : [],                                                                                       //penciller data
             writer          : [],                                                                                       //writer data 
-            data            : {},                                                                          
-            localstorageData: {}
         }
     },
     methods:{
@@ -73,8 +71,6 @@ export default{
     },
 
     created(){
-        this.localstorageData = JSON.parse( localStorage.getItem('marvelData') )
-        this.data = !!store.state.detailData ? store.state.detailData :  localstorageData
         const creators = store.state.detailData.creators.items  // gets the data from store and push writer and penciller data to display at UI
         creators.map(creator => {
             creator.role.includes("penciller") ? this.penciller.push(creator) : 

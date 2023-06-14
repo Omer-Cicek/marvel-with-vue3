@@ -50,7 +50,6 @@ export default {
     methods: {
         detailHandler(hero){                                //set data to store
             store.commit('addDetailData', hero) 
-            localStorage.setItem('marvelData', JSON.stringify(hero))                          // store data deletes when page reloaded at detail page so we  set data to localstorage
         },
 
         getHash() {                                         // gives hash for marvel Data request
@@ -77,9 +76,8 @@ async fetchHeroes() {
 },
     },
 
-    created(){                                              //delete store and localstorage data to get updated data
+    created(){                                              //delete store data to get updated data
         store.commit('deleteDetailData')
-        localStorage.removeItem('marvelData')
     },
 
     mounted(){                                              //calls fetchHeroes 
