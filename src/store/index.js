@@ -14,5 +14,5 @@ export default createStore({
             state.detailData= {}
         }
     },
-    plugins: [createPersistedState()],
+    plugins: [createPersistedState()], //to not be delete store data when reload
 });
