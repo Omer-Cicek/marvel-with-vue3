@@ -9,7 +9,7 @@
                     - Tony Stark (Avengers: Endgame)
                 </p>
                 <MyButton width="200px" @customClick="redirectToMarvel"> 
-                    Marvel's Page
+                    Marvel's Page 
                 </MyButton>
             </div>
         </div>
@@ -49,8 +49,13 @@ export default {
 
 
 <style lang="scss" >
+    body{
+        width: 100%;
+        overflow-x: hidden;
+    }
         .home-imageContainer {
             height: 100%;
+            width: 100vw;
             position: relative;
 
             .image {

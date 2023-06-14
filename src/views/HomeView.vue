@@ -22,9 +22,9 @@
 <script>
 import MyButton from '@/components/MyButton.vue';
 import { MD5 } from 'crypto-js';
-import axios from 'axios';
 import MyCard from '@/components/MyCard.vue';
 import Toastify from '../components/Toastify.vue';
+import {getData} from '../services/Get'
 import store from '../store'
 
 export default {
@@ -50,6 +50,7 @@ export default {
     methods: {
         detailHandler(hero){                                //set data to store
             store.commit('addDetailData', hero) 
+            localStorage.setItem('marvelData', JSON.stringify(hero))                          // store data deletes when page reloaded at detail page so we  set data to localstorage
         },
 
         getHash() {                                         // gives hash for marvel Data request
@@ -58,26 +59,27 @@ export default {
             ).toString();
         },
 
-        async fetchHeroes() {                               //fetch MarvelData
-            this.loading= true
-            const url = `${this.baseUrl}/v1/public/comics?ts=${this.timestamp}&apikey=${this.publicKey}&hash=${this.getHash()}`;
-            console.log(url);
-            axios.get(url).then(res =>{
-                console.log(res);
-                if(res.data.code === 200){
-                    this.marvelData = res.data.data.results
-                    console.log(res.data.data,"resss");
-                    this.$refs.toastify.toastSuccess('Data successfully uploaded!');
-                }else{
-                    this.$refs.toastify.toastError('An error occured!')
-                }
-            }).catch(err =>  this.$refs.toastify.toastError('An error occured!'))
-            .finally(() => this.loading= false)
-        }
+async fetchHeroes() {
+  this.loading = true;
+  const url = `${this.baseUrl}/v1/public/comics?ts=${this.timestamp}&apikey=${this.publicKey}&hash=${this.getHash()}`;
+  getData(url).then((res) => {
+      if (res.data.code === 200 || res.code ===200) {
+        this.marvelData = res.data.results;
+        this.$refs.toastify.toastSuccess('Data successfully uploaded!');
+      } else {
+        this.$refs.toastify.toastError('An error occurred!');
+      }
+    })
+    .catch((err) => this.$refs.toastify.toastError('An error occurred!'))
+    .finally(() => {
+      this.loading = false;
+    });
+},
     },
 
-    created(){                                              //delete store data to get updated data
+    created(){                                              //delete store and localstorage data to get updated data
         store.commit('deleteDetailData')
+        localStorage.removeItem('marvelData')
     },
 
     mounted(){                                              //calls fetchHeroes 
